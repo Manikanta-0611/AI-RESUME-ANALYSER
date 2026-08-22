@@ -1,118 +1,101 @@
 # 📄 AI Resume Analyser
 
-A powerful, modern, single-file Python application built with **Streamlit**, **PyPDF**, and the **Groq API** (featuring fast LLM inference with Qwen 2.5 / Qwen 3.6 / LLaMA 3.3 models). 
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B.svg)](https://streamlit.io/)
+[![Groq API](https://img.shields.io/badge/Groq%20API-Powered-f05023.svg)](https://groq.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-The AI Resume Analyser evaluates resume PDFs across 6 core pillars, helping candidates optimize their resumes for Applicant Tracking Systems (ATS) and tech hiring standards (specifically tailored for Full Stack Developers).
+An intelligent, AI-powered resume analysis application built with **Streamlit**, **PyPDF**, and **Groq's Ultra-Fast LLM API** (utilizing `qwen/qwen3.6-27b`, `qwen-2.5-32b`, and `llama-3.3-70b-versatile`). 
+
+The application delivers deep, multi-dimensional evaluations of PDF resumes across **6 core hiring pillars**, specifically optimized for candidates targeting **Full Stack Developer** and modern software engineering roles.
 
 ---
 
-## 🌟 Features
+## 🌟 Key Features
 
-- 📑 **PDF Resume Parsing**: Extracts raw text cleanly from uploaded PDF files using `pypdf`.
-- ⚡ **Groq LLM Acceleration**: Powered by free-tier Groq API models (`qwen-2.5-32b`, `qwen-2.5-coder-32b`, `llama-3.3-70b-versatile`, `qwen/qwen3.6-27b`).
-- 🎨 **Glassmorphism UI**: Built with Streamlit, custom CSS, dark mode aesthetics, and dynamic tabbed report views.
-- 🎯 **6 Specialized Evaluation Pillars**:
-  1. **Content Clarity & Impact**: Visual hierarchy, formatting, passive vs active verbs, quantifiable metrics ($ / % / scale).
-  2. **Skills Presentation**: Tech stack breakdown, hard vs soft skills categorization, missing skill gaps.
-  3. **Experience Descriptions**: STAR method compliance audit and weak bullet point rewrites.
-  4. **Specific Recommendations for Full Stack Developer**: Frontend, Backend, Database, Cloud/DevOps, and portfolio project suggestions.
-  5. **Overall Rating & Checklist**: Score breakdown out of 100, pass/fail section audit, top strengths & critical weaknesses.
-  6. **Refined Resume**: Rewritten, standardized, ATS-friendly markdown resume.
-- 📥 **Export & Downloads**: Download individual refined resumes or full evaluation reports in Markdown (`.md`) format.
+- 📑 **Instant PDF Text Parsing**: Seamless text extraction from PDF files using `pypdf`.
+- ⚡ **Powered by Groq Free-Tier Models**: Super-fast inference with fallback support across Qwen & LLaMA 3.3 models.
+- 🎨 **Modern Dark Glassmorphism UI**: High-end responsive Streamlit interface with custom CSS styling.
+- 🎯 **6 Comprehensive Analysis Pillars**:
+  1. **Content Clarity & Impact**: Evaluates visual hierarchy, active voice, and quantified metrics.
+  2. **Skills Presentation**: Tech stack breakdown (Languages, Frameworks, Databases, DevOps) and missing skill identification.
+  3. **Experience Descriptions**: STAR method compliance audit and automatic high-impact bullet point rewrites.
+  4. **Full Stack Developer Specifics**: Frontend, Backend, Database/DevOps readiness, plus 2 tailored production project recommendations.
+  5. **Overall Score & Audit Checklist**: Quantitative score (out of 100), pass/fail checklist matrix, top strengths, and critical areas for improvement.
+  6. **Refined ATS-Friendly Resume**: Complete Markdown resume rewrite ready for copy-pasting or downloading.
+- 📥 **One-Click Export**: Download the refined resume (`.md`) or the complete evaluation report (`.md`).
 
 ---
 
 ## 🏗️ Architecture & Workflow
 
-### Architectural Diagram
-
 ```mermaid
 flowchart TD
-    A[User PDF Upload] --> B[pypdf Text Extractor]
-    B --> C[Extracted Text Content]
-    C --> D[Groq LLM Engine API]
-    E[User Config: API Key, Model, Target Role] --> D
-    
-    subgraph Analysis Execution [6 Evaluation Prompts]
-        D --> P1[1. Content Clarity & Impact]
-        D --> P2[2. Skills Presentation]
-        D --> P3[3. Experience Descriptions]
-        D --> P4[4. Full Stack Recommendations]
-        D --> P5[5. Overall Rating & Audit]
-        D --> P6[6. Refined Resume Rewrite]
-    end
-    
-    P1 --> UI[Streamlit Tabbed UI Output]
-    P2 --> UI
-    P3 --> UI
-    P4 --> UI
-    P5 --> UI
-    P6 --> UI
-    
-    UI --> DW1[Download Refined Resume .md]
-    UI --> DW2[Download Complete Report .md]
+    User([User]) -->|Uploads PDF Resume| StreamlitUI[Streamlit Web Interface]
+    StreamlitUI -->|Extracts Plain Text| PDFParser[PyPDF Reader Engine]
+    PDFParser -->|Sends Structured Prompts| GroqAPI[Groq LLM API]
+    GroqAPI -->|Evaluates 6 Pillars| AnalysisModules[Multi-Category Analysis Engine]
+    AnalysisModules -->|Renders Interactive Tabs| TabbedUI[Streamlit Glassmorphism UI]
+    TabbedUI -->|Export Options| Downloads[Download Markdown Reports & Refined Resume]
 ```
-
-### Application Workflow
-1. **Setup Configuration**: Provide your Groq API Key (from [Console Groq](https://console.groq.com/keys)) and pick your target model and job role in the sidebar.
-2. **Upload PDF Resume**: Drag and drop or browse to select your PDF resume file.
-3. **Trigger Evaluation**: Click the **🚀 Resume Analyse** button.
-4. **Inspect Interactive Tabs**: Review deep insights tab-by-tab across all 6 prompt dimensions.
-5. **Download Export**: Export the complete feedback or download your newly rewritten ATS-friendly Markdown resume.
 
 ---
 
-## 🚀 Quickstart & Setup Commands
+## ⚙️ Prerequisites & Environment Setup
 
 ### Prerequisites
-- Python 3.9 or higher installed on your system.
-- Groq API Key (free tier available at [console.groq.com](https://console.groq.com/keys)).
+- **Python 3.10+** installed on your system.
+- A free **Groq API Key** (Get one at [console.groq.com/keys](https://console.groq.com/keys)).
 
-### 1. Clone or Navigate to Project Directory
+---
+
+## 🚀 Quick Start Guide
+
+### 1. Clone & Navigate to Project Directory
 ```powershell
 cd c:\Users\LENOVO\Desktop\Projectgen
 ```
 
-### 2. Create Virtual Environment (`.venv`)
-**PowerShell / Command Prompt (Windows):**
-```powershell
-python -m venv .venv
-```
-
-### 3. Activate Virtual Environment
-**PowerShell:**
+### 2. Activate Existing Virtual Environment
+On Windows (PowerShell):
 ```powershell
 .\.venv\Scripts\activate
 ```
-
-**CMD:**
-```cmd
-.\.venv\Scripts\activate.bat
-```
-
-**Linux / macOS:**
+On Linux/macOS:
 ```bash
 source .venv/bin/activate
 ```
 
-### 4. Install Dependencies
+### 3. Install Dependencies
 ```powershell
-pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+*Installed dependencies:*
+- `streamlit >= 1.30.0`
+- `groq >= 0.4.2`
+- `pypdf >= 4.0.0`
+- `python-dotenv >= 1.0.0`
+
+### 4. Configure Environment Variables
+Create or verify your `.env` file in the root directory:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+GROQ_MODEL=qwen/qwen3.6-27b
 ```
 
 ### 5. Run the Application
-
-**Option A (Direct Venv Path - Recommended for PowerShell):**
+Launch the Streamlit web server using the virtual environment python runner:
 ```powershell
-.\.venv\Scripts\streamlit run main.py
+.\.venv\Scripts\python.exe -m streamlit run main.py
+```
+Or with activated environment:
+```powershell
+streamlit run main.py
 ```
 
-**Option B (Activated Virtual Environment):**
-```powershell
-python -m streamlit run main.py
-```
-
-After running the command, open your browser at `http://localhost:8501`.
+Access the application in your browser at:
+`http://localhost:8501`
 
 ---
 
@@ -120,24 +103,28 @@ After running the command, open your browser at `http://localhost:8501`.
 
 ```
 Projectgen/
-│
-├── main.py              # Main single-file Streamlit application logic & Groq integration
-├── requirements.txt     # Python dependencies (streamlit, groq, pypdf, python-dotenv)
-├── README.md            # Comprehensive project documentation & guide
-└── .venv/               # Python virtual environment (generated)
+├── .env                 # Environment configuration (API keys, default model)
+├── .env.example         # Template for environment variables
+├── .gitignore           # Git ignore rules
+├── requirements.txt     # Python dependency specifications
+├── README.md            # Project documentation
+├── main.py              # Main Streamlit web application & Groq API logic
+└── .venv/               # Python virtual environment
 ```
 
 ---
 
-## 🛠️ Model Options
+## 🔧 Troubleshooting
 
-Groq offers fast inference on multiple open models. You can select any of the following in the sidebar:
-- `qwen-2.5-32b` *(Recommended for balanced performance & speed)*
-- `qwen-2.5-coder-32b` *(Optimized for code and technical resumes)*
-- `llama-3.3-70b-versatile` *(High capacity analysis)*
-- `qwen/qwen3.6-27b` or Custom Model ID
+- **Missing API Key Error**: Ensure `GROQ_API_KEY` is added to `.env` or entered directly into the sidebar text field in the app.
+- **Port Conflict (8501)**: If port 8501 is already in use, run Streamlit on a different port:
+  ```powershell
+  .\.venv\Scripts\python.exe -m streamlit run main.py --server.port 8502
+  ```
+- **PDF Extraction Issues**: Ensure the uploaded PDF contains selectable text (not scanned images/bitmaps).
 
 ---
 
 ## 📜 License
-MIT License. Free for personal and commercial use.
+
+This project is open-source and available under the [MIT License](LICENSE).
